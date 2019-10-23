@@ -91,8 +91,8 @@ public struct LightState: JSONDecodable, JSONEncodable {
 
 extension LightState: Hashable {
     
-    public var hashValue: Int {
-        return (self.brightness ?? 0) + (self.hue ?? 0) + (self.saturation ?? 0)
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine((self.brightness ?? 0) + (self.hue ?? 0) + (self.saturation ?? 0))
     }
 }
 

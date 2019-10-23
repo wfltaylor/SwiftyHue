@@ -91,7 +91,7 @@ public class HeartbeatManager {
 
         print("Heartbeat Request", "\(url)")
         
-        Alamofire.request(url).responseJSON { response in // method
+        AF.request(url).responseJSON { response in // method
             
             switch response.result {
             case .success:
@@ -110,49 +110,58 @@ public class HeartbeatManager {
     
     // MARK: Timer Action Response Handling
     
-    private func handleSuccessResponseResult(_ result: Result<Any>, resourceType: HeartbeatBridgeResourceType) {
+    private func handleSuccessResponseResult(_ result: Result<Any, AFError>, resourceType: HeartbeatBridgeResourceType) {
         
         print("Heartbeat Response for Resource Type \(resourceType.rawValue.lowercased()) received")
         //Log.trace("Heartbeat Response: \(resourceType.rawValue.lowercaseString): ", result.value)
-        
-        if responseResultIsPhilipsAPIErrorType(result: result, resourceType: resourceType) {
-            
-            if let resultValueJSONArray = result.value as? [JSON] {
+        switch result {
+        case .failure(_):
+            print("Failure")
+        case .success(let value):
+            if responseResultIsPhilipsAPIErrorType(result: result, resourceType: resourceType) {
                 
-                self.handleErrors(resultValueJSONArray)
-            }
-            
-        } else {
-            
-            if let resultValueJSON = result.value as? JSON {
-                
-                for heartbeatProcessor in self.heartbeatProcessors {
-                    heartbeatProcessor.processJSON(resultValueJSON, forResourceType: resourceType)
+                if let resultValueJSONArray = value as? [JSON] {
+                    
+                    self.handleErrors(resultValueJSONArray)
                 }
                 
-                self.notifyAboutLocalConnection()
+            } else {
                 
+                if let resultValueJSON = value as? JSON {
+                    
+                    for heartbeatProcessor in self.heartbeatProcessors {
+                        heartbeatProcessor.processJSON(resultValueJSON, forResourceType: resourceType)
+                    }
+                    
+                    self.notifyAboutLocalConnection()
+                    
+                }
             }
         }
+        
         
     }
     
-    private func responseResultIsPhilipsAPIErrorType(result: Result<Any>, resourceType: HeartbeatBridgeResourceType) -> Bool {
-        
-        switch resourceType {
-            
-        case .config:
-            
-            if let resultValueJSON = result.value as? JSON {
+    private func responseResultIsPhilipsAPIErrorType(result: Result<Any, AFError>, resourceType: HeartbeatBridgeResourceType) -> Bool {
+        switch result {
+        case .failure(_):
+            print("Failure")
+        case .success(let value):
+            switch resourceType {
                 
-                return resultValueJSON.count <= 8 // HUE API gives always a respond for config request, but it only contains 8 Elements if no authorized user is used
+            case .config:
+                
+                if let resultValueJSON = value as? JSON {
+                    
+                    return resultValueJSON.count <= 8 // HUE API gives always a respond for config request, but it only contains 8 Elements if no authorized user is used
+                }
+                
+            default:
+                
+                return value as? [JSON] != nil // Errros are delivered as Array
             }
             
-        default:
-            
-            return result.value as? [JSON] != nil // Errros are delivered as Array
         }
-        
         return false
     }
     

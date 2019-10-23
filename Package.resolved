@@ -1,0 +1,34 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Alamofire",
+        "repositoryURL": "https://github.com/Alamofire/Alamofire.git",
+        "state": {
+          "branch": null,
+          "revision": "c1d14588e5558a3669fd03510d135d88c5109069",
+          "version": "5.0.0-rc.2"
+        }
+      },
+      {
+        "package": "CocoaAsyncSocket",
+        "repositoryURL": "https://github.com/wfltaylor/CocoaAsyncSocket.git",
+        "state": {
+          "branch": "master",
+          "revision": "73e38ad218acc75570a527a729863699622ef0c9",
+          "version": null
+        }
+      },
+      {
+        "package": "Gloss",
+        "repositoryURL": "https://github.com/hkellaway/Gloss.git",
+        "state": {
+          "branch": null,
+          "revision": "d2249d299a17418dc69b7685a00ccd31510cf14e",
+          "version": "3.1.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

@@ -72,9 +72,8 @@ public struct WhitelistEntry: BridgeResource, BridgeResourceDictGenerator {
 
 extension WhitelistEntry: Hashable {
     
-    public var hashValue: Int {
-        
-        return Int(identifier)!
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(Int(identifier)!)
     }
 }
 

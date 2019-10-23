@@ -48,9 +48,8 @@ public struct SoftwareUpdateStatusDeviceTypes: JSONDecodable {
 
 extension SoftwareUpdateStatusDeviceTypes: Hashable {
     
-    public var hashValue: Int {
-        
-        return 1
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(1)
     }
 }
 

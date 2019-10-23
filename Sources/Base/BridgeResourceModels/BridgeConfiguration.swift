@@ -228,9 +228,8 @@ public struct BridgeConfiguration: BridgeResourceDictGenerator, BridgeResource {
 
 extension BridgeConfiguration: Hashable {
     
-    public var hashValue: Int {
-        
-        return Int(self.identifier)!
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(Int(self.identifier)!)
     }
 }
 public func ==(lhs: BridgeConfiguration, rhs: BridgeConfiguration) -> Bool {

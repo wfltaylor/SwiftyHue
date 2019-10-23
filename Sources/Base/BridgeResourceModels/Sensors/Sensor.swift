@@ -145,9 +145,8 @@ public class Sensor: PartialSensor{
 
 extension Sensor: Hashable {
     
-    public var hashValue: Int {
-        
-        return 1
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(1)
     }
 }
 

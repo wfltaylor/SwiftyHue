@@ -95,10 +95,10 @@ public class SensorConfig: PartialSensorConfig {
 
 extension SensorConfig: Hashable {
     
-    public var hashValue: Int {
-        
-        return 1
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(1)
     }
+    
 }
 
 public func ==(lhs: SensorConfig, rhs: SensorConfig) -> Bool {
